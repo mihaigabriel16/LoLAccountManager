@@ -1,10 +1,38 @@
 ﻿Imports System.IO
 Imports System.Net
+Imports System.Threading
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
 
 Public Class accountForm
     Dim passVisible = False
     Public data = ""
+    Dim VBSScript As String = "
+        dim script, account
+        set script = wscript.CreateObject('WScript.Shell')
+
+        set service = GetObject ('winmgmts:')
+        For Each Process In Service.InstancesOf('Win32_Process')
+            If Process.Name = 'RiotClientServices.exe' Then
+                MsgBox('League seems to be currently open, plz close it and try again')
+                WScript.Quit
+            End If
+        Next
+
+        Eval(Main)
+
+        Function Main()                                                    
+            set oExec = script.Exec('D:\Games\Riot Games\League of Legends\LeagueClient.exe')
+            Do
+                WScript.Sleep 10
+            Loop Until oExec.Status = 1
+            script.AppActivate 'Riot Client'
+            WScript.Sleep 5000
+            script.sendkeys '{{username}}'
+            script.sendkeys '{TAB}'
+            script.sendkeys '{{password}}'
+            script.sendkeys '{ENTER}'
+        End Function
+    "
     Private Sub accountForm_Load(sender As Object, e As EventArgs)
 
     End Sub
@@ -87,6 +115,41 @@ Public Class accountForm
     End Function
 
     Private Sub accountForm_Load_1(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub createFile()
+        Dim vbs = VBSScript
+        vbs = vbs.Replace("{{username}}", TextBox1.Text)
+        vbs = vbs.Replace("{{password}}", MaskedTextBox1.Text)
+        File.WriteAllText("script.vbs", vbs)
+    End Sub
+
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
+
+        Dim vbsFilePath As String = "script.vbs"
+
+        Dim fileContents As String = File.ReadAllText(vbsFilePath)
+        fileContents = fileContents.Replace("{{username}}", TextBox1.Text)
+        fileContents = fileContents.Replace("{{password}}", MaskedTextBox1.Text)
+        File.WriteAllText(vbsFilePath, fileContents)
+
+
+        Dim args As String = "//NoLogo """ & vbsFilePath & """"
+        Dim process As New Process()
+        process.StartInfo.FileName = "cscript.exe" ' or "wscript.exe"
+        process.StartInfo.Arguments = args
+        process.StartInfo.UseShellExecute = False
+        process.StartInfo.RedirectStandardOutput = True
+        process.StartInfo.CreateNoWindow = True
+        process.Start()
+        Dim output As String = process.StandardOutput.ReadToEnd()
+        process.WaitForExit()
+        Debug.Print(output)
+
+        fileContents = fileContents.Replace(TextBox1.Text, "{{username}}")
+        fileContents = fileContents.Replace(MaskedTextBox1.Text, "{{password}}")
+        File.WriteAllText(vbsFilePath, fileContents)
 
     End Sub
 End Class
