@@ -4,7 +4,19 @@
     <Compile Update="accountForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="addAccount.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="editAccount.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="launcherForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="settingsForm.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

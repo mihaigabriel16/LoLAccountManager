@@ -62,7 +62,7 @@ Partial Class accountForm
         Button2.FlatAppearance.BorderSize = 0
         Button2.FlatStyle = FlatStyle.Flat
         Button2.ForeColor = Color.White
-        Button2.Location = New Point(673, 8)
+        Button2.Location = New Point(673, 6)
         Button2.Name = "Button2"
         Button2.Size = New Size(75, 23)
         Button2.TabIndex = 4
@@ -111,7 +111,7 @@ Partial Class accountForm
         Button3.FlatAppearance.BorderSize = 0
         Button3.FlatStyle = FlatStyle.Flat
         Button3.ForeColor = Color.White
-        Button3.Location = New Point(605, 9)
+        Button3.Location = New Point(605, 6)
         Button3.Name = "Button3"
         Button3.Size = New Size(62, 23)
         Button3.TabIndex = 8
@@ -120,7 +120,7 @@ Partial Class accountForm
         ' 
         ' accountForm
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(22), CByte(22), CByte(22))
         ClientSize = New Size(760, 40)

@@ -1,38 +1,13 @@
 ﻿Imports System.IO
+Imports System.Management
 Imports System.Net
+Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
-
+Imports HtmlAgilityPack
 Public Class accountForm
     Dim passVisible = False
     Public data = ""
-    Dim VBSScript As String = "
-        dim script, account
-        set script = wscript.CreateObject('WScript.Shell')
-
-        set service = GetObject ('winmgmts:')
-        For Each Process In Service.InstancesOf('Win32_Process')
-            If Process.Name = 'RiotClientServices.exe' Then
-                MsgBox('League seems to be currently open, plz close it and try again')
-                WScript.Quit
-            End If
-        Next
-
-        Eval(Main)
-
-        Function Main()                                                    
-            set oExec = script.Exec('D:\Games\Riot Games\League of Legends\LeagueClient.exe')
-            Do
-                WScript.Sleep 10
-            Loop Until oExec.Status = 1
-            script.AppActivate 'Riot Client'
-            WScript.Sleep 5000
-            script.sendkeys '{{username}}'
-            script.sendkeys '{TAB}'
-            script.sendkeys '{{password}}'
-            script.sendkeys '{ENTER}'
-        End Function
-    "
     Private Sub accountForm_Load(sender As Object, e As EventArgs)
 
     End Sub
@@ -51,16 +26,44 @@ Public Class accountForm
 
     End Sub
 
+    Private Sub ScrapeOpGG(ByVal name, ByVal region)
+        Dim playerProfileUrl As String = "https://" & region & ".op.gg/summoner/userName=" & name
+
+        Dim web As New HtmlWeb()
+        Dim doc As HtmlDocument = web.Load(playerProfileUrl)
+
+        Dim divisionNode As HtmlNode = doc.DocumentNode.SelectSingleNode("//div[@class='tier']")
+        Dim lpNode As HtmlNode = doc.DocumentNode.SelectSingleNode("//div[@class='lp']")
+        Dim winrateNode As HtmlNode = doc.DocumentNode.SelectSingleNode("//div[@class='ratio']")
+        Dim division As String = divisionNode.InnerText.Trim()
+        Dim lp As String = lpNode.InnerText.Trim()
+        Dim winrate As String = winrateNode.InnerText.Trim()
+        winrate = GetWinrateFromString(winrate)
+
+        Label2.Text = division & " (" & lp & ") - " & winrate
+    End Sub
+
+    Private Function GetWinrateFromString(ByVal text)
+        Dim pattern As String = "[\d%]+"
+        Dim match = Regex.Match(text, pattern)
+        Dim outputString As String = match.Value
+        Return outputString
+    End Function
+
     Public Sub loadData()
         Dim str = data
-        Dim splitString() As String = str.Split({"/|\"}, StringSplitOptions.None)
+        Dim splitString() As String = str.Split({"|"}, StringSplitOptions.None)
         Label1.Text = splitString(0)
         TextBox1.Text = splitString(1)
         MaskedTextBox1.Text = splitString(2)
         Dim username = splitString(3)
 
-        Dim riot As New RiotAPI("RGAPI-8049eadb-47d6-4962-b7f8-b7862ab1b142", 4)
-        GetSummonerInfo(riot, username, Label1.Text)
+        Dim riot As New RiotAPI(My.Settings.APIKey, 4)
+        If My.Settings.LocalAPI = True Then
+            GetSummonerInfo(riot, username, Label1.Text)
+        Else
+            ScrapeOpGG(username, Label1.Text)
+        End If
     End Sub
 
     Private Sub GetSummonerInfo(ByRef riot, ByVal name, ByVal region)
@@ -68,11 +71,9 @@ Public Class accountForm
         Dim summoner_league As New List(Of LeagueEntryDTO)
         summoner_league = riot.GetLeagueBySummonerID(summoner.id, TranslateRegion(region))
         For Each item In summoner_league
-            Dim rankSolo As String = ""
             If item.queueType = "RANKED_SOLO_5x5" Then
-                rankSolo = item.tier & " " & item.rank & " (" & item.leaguePoints & " LP) - " & CalculateWinrate(item.wins, item.losses)
+                Label2.Text = item.tier & " " & item.rank & " (" & item.leaguePoints & " LP) - " & CalculateWinrate(item.wins, item.losses)
             End If
-            Label2.Text = rankSolo
         Next
 
     End Sub
@@ -114,26 +115,8 @@ Public Class accountForm
         Return translated
     End Function
 
-    Private Sub accountForm_Load_1(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub createFile()
-        Dim vbs = VBSScript
-        vbs = vbs.Replace("{{username}}", TextBox1.Text)
-        vbs = vbs.Replace("{{password}}", MaskedTextBox1.Text)
-        File.WriteAllText("script.vbs", vbs)
-    End Sub
-
-    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
-
+    Private Sub StartGame()
         Dim vbsFilePath As String = "script.vbs"
-
-        Dim fileContents As String = File.ReadAllText(vbsFilePath)
-        fileContents = fileContents.Replace("{{username}}", TextBox1.Text)
-        fileContents = fileContents.Replace("{{password}}", MaskedTextBox1.Text)
-        File.WriteAllText(vbsFilePath, fileContents)
-
 
         Dim args As String = "//NoLogo """ & vbsFilePath & """"
         Dim process As New Process()
@@ -145,11 +128,36 @@ Public Class accountForm
         process.Start()
         Dim output As String = process.StandardOutput.ReadToEnd()
         process.WaitForExit()
-        Debug.Print(output)
+    End Sub
 
-        fileContents = fileContents.Replace(TextBox1.Text, "{{username}}")
-        fileContents = fileContents.Replace(MaskedTextBox1.Text, "{{password}}")
-        File.WriteAllText(vbsFilePath, fileContents)
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
+        If String.IsNullOrEmpty(My.Settings.LoLPath) Then
+            MsgBox("League of Legends Path is empty. Please set it in the Settings.", MsgBoxStyle.OkOnly)
+            settingsForm.ShowDialog()
+        Else
+            Dim myProcess As New Process()
+            myProcess.StartInfo.FileName = My.Settings.LoLPath & "\LeagueClient.exe"
+            myProcess.Start()
+            myProcess.WaitForInputIdle()
+            Thread.Sleep(1000)
+            SendKeys.Send(TextBox1.Text)
+            SendKeys.Send("{TAB}")
+            SendKeys.Send(MaskedTextBox1.Text)
+            SendKeys.Send("{ENTER}")
+        End If
+    End Sub
 
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+
+    End Sub
+
+    Private Sub accountForm_Load_1(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim edit As New editAccount
+        edit.loadData(data)
+        edit.ShowDialog()
     End Sub
 End Class

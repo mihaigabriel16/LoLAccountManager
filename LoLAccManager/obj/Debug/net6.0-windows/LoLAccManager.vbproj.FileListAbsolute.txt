@@ -19,3 +19,12 @@ D:\Projects\League of Legends\LoLAccManager\LoLAccManager\obj\Debug\net6.0-windo
 D:\Projects\League of Legends\LoLAccManager\LoLAccManager\obj\Debug\net6.0-windows\LoLAccManager.accountForm.resources
 D:\Projects\League of Legends\LoLAccManager\LoLAccManager\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
 D:\Projects\League of Legends\LoLAccManager\LoLAccManager\obj\Debug\net6.0-windows\LoLAccManager.vbproj.CopyComplete
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\obj\Debug\net6.0-windows\LoLAccManager.settingsForm.resources
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\bin\Debug\net6.0-windows\System.CodeDom.dll
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\bin\Debug\net6.0-windows\System.Management.dll
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Management.dll
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\bin\Debug\net6.0-windows\LoLAccManager.dll.config
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\obj\Debug\net6.0-windows\LoLAccManager.launcherForm.resources
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\obj\Debug\net6.0-windows\LoLAccManager.addAccount.resources
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\obj\Debug\net6.0-windows\LoLAccManager.editAccount.resources
+D:\Projects\League of Legends\LoLAccManager\LoLAccManager\bin\Debug\net6.0-windows\HtmlAgilityPack.dll

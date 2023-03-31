@@ -43,6 +43,7 @@ Partial Class Form1
         ' Panel1
         ' 
         Panel1.BackColor = Color.FromArgb(CByte(150), CByte(0), CByte(0), CByte(0))
+        Panel1.BorderStyle = BorderStyle.FixedSingle
         Panel1.Controls.Add(Panel4)
         Panel1.Controls.Add(Panel3)
         Panel1.Controls.Add(Panel2)
@@ -83,21 +84,26 @@ Partial Class Form1
         Button5.BackColor = Color.SteelBlue
         Button5.FlatAppearance.BorderSize = 0
         Button5.FlatStyle = FlatStyle.Flat
-        Button5.Location = New Point(3, 517)
+        Button5.ForeColor = Color.White
+        Button5.Location = New Point(3, 524)
         Button5.Name = "Button5"
-        Button5.Size = New Size(194, 37)
+        Button5.Size = New Size(194, 30)
         Button5.TabIndex = 3
         Button5.Text = "Settings"
         Button5.UseVisualStyleBackColor = False
         ' 
         ' Button4
         ' 
+        Button4.BackColor = Color.OliveDrab
+        Button4.FlatAppearance.BorderSize = 0
+        Button4.FlatStyle = FlatStyle.Flat
+        Button4.ForeColor = Color.White
         Button4.Location = New Point(20, 127)
         Button4.Name = "Button4"
         Button4.Size = New Size(160, 23)
         Button4.TabIndex = 2
         Button4.Text = "Add Account"
-        Button4.UseVisualStyleBackColor = True
+        Button4.UseVisualStyleBackColor = False
         ' 
         ' Label3
         ' 
@@ -114,9 +120,9 @@ Partial Class Form1
         ' 
         Label2.Font = New Font("Arial", 26.25F, FontStyle.Regular, GraphicsUnit.Point)
         Label2.ForeColor = Color.White
-        Label2.Location = New Point(75, 58)
+        Label2.Location = New Point(50, 58)
         Label2.Name = "Label2"
-        Label2.Size = New Size(50, 50)
+        Label2.Size = New Size(100, 50)
         Label2.TabIndex = 0
         Label2.Text = "0"
         Label2.TextAlign = ContentAlignment.MiddleCenter
@@ -141,7 +147,7 @@ Partial Class Form1
         Label1.Name = "Label1"
         Label1.Size = New Size(118, 15)
         Label1.TabIndex = 2
-        Label1.Text = "LoLAccountManager" ' 
+        Label1.Text = "LoLAccountManager"' 
         ' Button2
         ' 
         Button2.BackColor = Color.SteelBlue
@@ -170,7 +176,7 @@ Partial Class Form1
         ' 
         ' Form1
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = My.Resources.Resources.gangplank_lol_dreadnova_splash_art_uhdpaper_com_4K_194_wp_thumbnail
         BackgroundImageLayout = ImageLayout.Stretch

@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Hlju5eCxID2GPAHvqredI/MrjzKJE6usF4NClPnax38eNlympfoFD+HG8acGdnDTQL5kqauTwsb03Dx6aYR3HQ==",
+  "dgSpecHash": "cFcTzYdewHab+gWQ5fgUERBVk1tMGBRWZd7cTr+kd6plJsuuosi0rs0QY2mVJxaKL44VIaJ+o/du4r0FwuDVPg==",
   "success": true,
   "projectFilePath": "D:\\Projects\\League of Legends\\LoLAccManager\\LoLAccManager\\LoLAccManager.vbproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Mihai\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\Mihai\\.nuget\\packages\\htmlagilitypack\\1.11.46\\htmlagilitypack.1.11.46.nupkg.sha512",
+    "C:\\Users\\Mihai\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Mihai\\.nuget\\packages\\system.codedom\\7.0.0\\system.codedom.7.0.0.nupkg.sha512",
+    "C:\\Users\\Mihai\\.nuget\\packages\\system.management\\7.0.0\\system.management.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }
